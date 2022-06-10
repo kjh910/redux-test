@@ -4,9 +4,18 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
 
+job:
+  build:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      checkout
+
+      - run: npm i
+      - run: npm run dev
+
 workflows:
-  sample:
+  version: 2.1
+  build:
     jobs:
-      - node/test:
-          version: '16.10'
-          pkg-manager: npm
+      - build
