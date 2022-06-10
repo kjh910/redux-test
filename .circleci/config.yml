@@ -1,14 +1,13 @@
-
 version: 2.1
 
 orbs:
-  node: circleci/node@4.7
+  node: cimg/node:17.9.1
 
 jobs:
   build:
     working_directory: ~/project
     docker:
-      - image: circleci/node:latest
+      - image: cimg/node:17.9.1
     steps:
       - checkout
       - run: npm i
