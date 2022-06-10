@@ -1,33 +1,26 @@
-# version: 2.1
-
-# orbs:
-#   cypress: cypress-io/cypress@2.0.0
-
-# jobs:
-#   build:
-#     working_directory: ~/project
-#     docker:
-#       - image: cimg/node:17.9.1
-#     steps:
-#       - checkout
-#       - run: npm i
-#       - cypress/install
-#       - cypress-run:
-#           requires:
-#             - cypress/install
-#           record: true
-#           parallel: true
-#           parallelism: 10
-
-# workflows:
-#   version: 2.1
-#   build:
-#     jobs:
-#       - build
 version: 2.1
+
 orbs:
   cypress: cypress-io/cypress@2.0.0
+
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: cimg/node:17.9.1
+    steps:
+      - checkout
+      - run: npm i
+      - cypress/install
+      - cypress-run:
+          requires:
+            - cypress/install
+          record: true
+          parallel: true
+          parallelism: 10
+
 workflows:
+  version: 2.1
   build:
     jobs:
-      - cypress/run
+      - build
