@@ -39,11 +39,11 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile
+          command: npm install --frozen-lockfile
           working_directory: e2e
       - run:
           name: Install dependencies
-          command: yarn install
+          command: npm install
 
 workflows:
 
@@ -60,7 +60,7 @@ workflows:
           yarn: true
           requires:
             - cypress/install
-          start: 'yarn run dev:start'
+          start: 'npm start'
           record: true
           group: 'all tests' # name this group "all tests" on the dashboard
           wait-on: 'http://localhost:3000'
