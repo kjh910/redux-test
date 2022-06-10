@@ -46,12 +46,7 @@ jobs:
           command: yarn install
 
 workflows:
-  lint:
-    jobs:
-      - setup
-      - lint:
-          requires:
-            - setup
+
   e2e:
     jobs:
       - setup_e2e
