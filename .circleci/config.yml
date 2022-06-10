@@ -1,0 +1,20 @@
+
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run: npm i
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build

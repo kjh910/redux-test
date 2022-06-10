@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  redux:
+      build: 
+        context: ./
+      container_name: redux_vanilla_container
+      volumes:
+        - ./vanilla-redux/:/app
+      ports:
+        - "3000:3000"
+      networks:
+        - redux
+
+networks:
+  redux:
+    name: redux
+    driver: bridge
