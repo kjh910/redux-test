@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - run: npm i
-      - run: npm test
+      - run: npm run test:cov
           
 
 workflows:
