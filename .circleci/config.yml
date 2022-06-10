@@ -10,12 +10,11 @@ job:
       - image: circleci/node:latest
     steps:
       - checkout
-
       - run: npm i
       - run: npm run dev
 
 workflows:
   version: 2.1
-  build:
+  test:
     jobs:
       - build
