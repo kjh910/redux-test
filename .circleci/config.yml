@@ -9,7 +9,7 @@ job:
     docker:
       - image: circleci/node:latest
     steps:
-      checkout
+      - checkout
 
       - run: npm i
       - run: npm run dev
