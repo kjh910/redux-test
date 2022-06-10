@@ -1,27 +1,72 @@
 version: 2.1
 
+# CiecleCIでCypressを動かすためのorbs
 orbs:
   cypress: cypress-io/cypress@2.0.0
 
-jobs:
-  build:
+# 実行環境の設定。実際にはjobs内で呼び出すことで利用できる
+# cypressを動かすには通常とは異なるdocker imageが必要なのでexecuterも２つにした
+executors:
+  default:
     working_directory: ~/project
     docker:
       - image: cimg/node:17.9.1
+        environment:
+          TZ: Asia/Tokyo
+  cypress:
+    working_directory: ~/project
+    docker:
+      - image: cypress/base:14.16.0
+        environment:
+          TZ: Asia/Tokyo
+
+jobs:
+  # 環境の設定
+  setup:
+    executor:
+      name: default
     steps:
       - checkout
-      - run: npm i
-          
+      - run:
+          name: Install dependencies
+          command: yarn install
+  
+  # e2e環境のセットアップ
+  setup_e2e:
+    executor:
+      name: cypress
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
+          working_directory: e2e
+      - run:
+          name: Install dependencies
+          command: yarn install
 
 workflows:
-  version: 2.1
-  build:
+  lint:
     jobs:
-      - build
-      - cypress/install
+      - setup
+      - lint:
+          requires:
+            - setup
+  e2e:
+    jobs:
+      - setup_e2e
+      # cypressのセットアップ。working_directoryでリポジトリ直下からe2eディレクトリに移動
+      - cypress/install:
+          working_directory: e2e
+          yarn: true
+      # cypress実行。ディレクトリを分けた関係でstartコマンドが複雑になった。
+      # cd .. && yarn install && yarn startを実行してからcypressを走らせる
       - cypress/run:
+          yarn: true
           requires:
             - cypress/install
+          start: 'yarn run dev:start'
           record: true
-          parallel: true
-          parallelism: 10
+          group: 'all tests' # name this group "all tests" on the dashboard
+          wait-on: 'http://localhost:3000'
+          working_directory: e2e
