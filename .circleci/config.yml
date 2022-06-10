@@ -11,16 +11,17 @@ jobs:
     steps:
       - checkout
       - run: npm i
-      - cypress/install
-      - cypress-run:
-          requires:
-            - cypress/install
-          record: true
-          parallel: true
-          parallelism: 10
+          
 
 workflows:
   version: 2.1
   build:
     jobs:
       - build
+      - cypress/install
+      - cypress/run:
+          requires:
+            - cypress/install
+          record: true
+          parallel: true
+          parallelism: 10
