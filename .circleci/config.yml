@@ -1,67 +1,18 @@
 version: 2.1
 
-# CiecleCIでCypressを動かすためのorbs
-orbs:
-  cypress: cypress-io/cypress@2.0.0
-
-# 実行環境の設定。実際にはjobs内で呼び出すことで利用できる
-# cypressを動かすには通常とは異なるdocker imageが必要なのでexecuterも２つにした
-executors:
-  default:
-    working_directory: ~/project
-    docker:
-      - image: cimg/node:17.9.1
-        environment:
-          TZ: Asia/Tokyo
-  cypress:
-    working_directory: ~/project
-    docker:
-      - image: cypress/base:17.8.0
-        environment:
-          TZ: Asia/Tokyo
-
 jobs:
-  # 環境の設定
-  setup:
-    executor:
-      name: default
+  build:
+    working_directory: ~/project
+    docker:
+      - image: cimg/node:18.3.0
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: yarn install
-  
-  # e2e環境のセットアップ
-  setup_e2e:
-    executor:
-      name: cypress
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: npm install --frozen-lockfile
-          working_directory: e2e
-      - run:
-          name: Install dependencies
-          command: npm install
+      - run: npm i
+      - run: npm test
+          
 
 workflows:
-
-  e2e:
+  version: 2.1
+  build:
     jobs:
-      - setup_e2e
-      # cypressのセットアップ。working_directoryでリポジトリ直下からe2eディレクトリに移動
-      - cypress/install:
-          working_directory: e2e
-          yarn: true
-      # cypress実行。ディレクトリを分けた関係でstartコマンドが複雑になった。
-      # cd .. && yarn install && yarn startを実行してからcypressを走らせる
-      - cypress/run:
-          yarn: true
-          requires:
-            - cypress/install
-          start: 'npm start'
-          record: true
-          group: 'all tests' # name this group "all tests" on the dashboard
-          wait-on: 'http://localhost:3000'
-          working_directory: e2e
+      - build
