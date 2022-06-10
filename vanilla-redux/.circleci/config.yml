@@ -6,7 +6,7 @@ orbs:
 
 jobs:
   build:
-    working_directory: vanilla-redux
+    working_directory: ~/project
     docker:
       - image: circleci/node:latest
     steps:
