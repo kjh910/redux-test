@@ -6,7 +6,7 @@ services:
         context: ./
       container_name: redux_vanilla_container
       volumes:
-        - ./vanilla-redux/:/app
+        - .:/app
       ports:
         - "3000:3000"
       networks:

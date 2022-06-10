@@ -4,6 +4,10 @@ WORKDIR /app/
 
 EXPOSE 3000
 
-ADD ./vanilla-redux/ /app/
+ADD . /app/
 
-CMD ["npm","start"]
+COPY ./runserver.sh /app/
+
+RUN chmod 777 /app/runserver.sh
+
+ENTRYPOINT ["/app/runserver.sh"]
