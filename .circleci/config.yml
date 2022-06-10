@@ -12,7 +12,6 @@ jobs:
     steps:
       - checkout
       - run: npm i
-      - run: npm start
 
 workflows:
   version: 2.1
