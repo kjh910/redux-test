@@ -10,7 +10,7 @@ jobs:
       - image: circleci/node:latest
     steps:
       - checkout
-      - run: ls -l
+      - run: cd vanilla-redux
       - run: npm i
       - run: npm run dev
 
